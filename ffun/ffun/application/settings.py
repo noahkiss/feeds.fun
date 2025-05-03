@@ -1,7 +1,10 @@
 import pydantic
 import pydantic_settings
 
+from ffun.core import logging
 from ffun.core.settings import BaseSettings
+
+logger = logging.get_module_logger()
 
 
 class PostgreSQL(pydantic.BaseModel):
@@ -56,7 +59,7 @@ class Settings(BaseSettings):
     @pydantic.model_validator(mode="after")
     def origin_must_be_redefined_in_prod(self) -> "Settings":
         if self.environment == "prod" and self.origins == _development_origins:
-            raise ValueError("Origins must be redefined in prod")
+            logger.warning("Allowed origins should be specified in prod")
 
         return self
 
