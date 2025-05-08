@@ -6,6 +6,8 @@ import router from "./router";
 
 import "./style.css";
 
+import * as CookieConsent from "./plugins/CookieConsent";
+
 import FeedsList from "./components/FeedsList.vue";
 import EntriesList from "./components/EntriesList.vue";
 import RulesList from "./components/RulesList.vue";
@@ -33,7 +35,9 @@ import TagsFilter from "./components/tags/TagsFilter.vue";
 import RuleTag from "./components/tags/RuleTag.vue";
 import FakeTag from "./components/tags/FakeTag.vue";
 
+import PageHeaderHomeButton from "./components/page_header/HomeButton.vue";
 import PageHeaderExternalLinks from "./components/page_header/ExternalLinks.vue";
+import PageFooter from "./components/page_footer/Footer.vue";
 
 import NotificationsApiKey from "./components/notifications/ApiKey.vue";
 import NotificationsCreateRuleHelp from "./components/notifications/CreateRuleHelp.vue";
@@ -56,6 +60,8 @@ import ExternalUrl from "./values/ExternalUrl.vue";
 import ValueFeedId from "./values/FeedId.vue";
 import ValueDateTime from "./values/DateTime.vue";
 import ValueScore from "./values/Score.vue";
+import Icon from "./values/Icon.vue";
+import SocialLink from "./values/SocialLink.vue";
 
 import BodyListReverseTimeColumn from "./components/body_list/ReverseTimeColumn.vue";
 import BodyListFaviconColumn from "./components/body_list/FaviconColumn.vue";
@@ -105,7 +111,9 @@ app.component("TagsFilter", TagsFilter);
 app.component("RuleTag", RuleTag);
 app.component("FakeTag", FakeTag);
 
+app.component("PageHeaderHomeButton", PageHeaderHomeButton);
 app.component("PageHeaderExternalLinks", PageHeaderExternalLinks);
+app.component("PageFooter", PageFooter);
 
 app.component("NotificationsApiKey", NotificationsApiKey);
 app.component("NotificationsCreateRuleHelp", NotificationsCreateRuleHelp);
@@ -128,6 +136,8 @@ app.component("ExternalUrl", ExternalUrl);
 app.component("ValueFeedId", ValueFeedId);
 app.component("ValueDateTime", ValueDateTime);
 app.component("ValueScore", ValueScore);
+app.component("Icon", Icon);
+app.component("SocialLink", SocialLink);
 
 app.component("BodyListReverseTimeColumn", BodyListReverseTimeColumn);
 app.component("BodyListFaviconColumn", BodyListFaviconColumn);
@@ -148,6 +158,8 @@ app.component("vue-countdown", VueCountdown);
 
 app.use(createPinia());
 app.use(router);
+
+app.use(CookieConsent.plugin, CookieConsent.defaultConfig);
 
 app.mount("#app");
 
@@ -196,16 +208,3 @@ async function onSessionLost() {
 }
 
 api.init({onSessionLost: onSessionLost});
-
-/////////////////////
-// plausible
-/////////////////////
-
-if (settings.plausibleEnabled) {
-  const script = document.createElement("script");
-  script.src = settings.plausibleScript;
-  script.async = true;
-  script.defer = true;
-  script.setAttribute("data-domain", settings.plausibleDomain);
-  document.body.appendChild(script);
-}
