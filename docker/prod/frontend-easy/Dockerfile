@@ -1,12 +1,18 @@
-FROM tiendil/feeds-fun-frontend-data:latest as static_data
+# Stage 1: Build frontend assets
+FROM node:lts AS builder
 
+WORKDIR /src
+COPY site /src/
+RUN npm ci && npm run build
+
+# Stage 2: Serve with Nginx
 FROM nginx:alpine
 
 # Install gettext for envsubst utility
 RUN apk add --no-cache gettext
 
-# Copy static assets from the frontend data image
-COPY --from=static_data /ffun-static-data /usr/share/nginx/html/
+# Copy built static files
+COPY --from=builder /src/dist /usr/share/nginx/html/
 
 # Copy the Nginx configuration template
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
