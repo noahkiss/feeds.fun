@@ -15,7 +15,7 @@ RUN apk add --no-cache gettext
 COPY --from=builder /src/dist /usr/share/nginx/html/
 
 # Copy the Nginx configuration template
-COPY nginx.conf.template /etc/nginx/nginx.conf.template
+COPY docker/prod/frontend-easy/nginx.conf.template /etc/nginx/nginx.conf.template
 
 # Nginx will listen on port 80 by default
 EXPOSE 80
